@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# macOS
+.DS_Store
+
+# Data
+data/raw/
+data/processed/
+data/splits/
+
+# Results
+.venv/
+__pycache__/
+*.py[cod]
+.idea/workspace.xml
