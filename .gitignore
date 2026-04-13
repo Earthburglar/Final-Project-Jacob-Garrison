@@ -1,6 +1,6 @@
 # Python
 __pycache__/
-*.pyc
+*.py[cod]
 .venv/
 venv/
 
@@ -10,13 +10,17 @@ venv/
 # macOS
 .DS_Store
 
-# Data
-data/raw/
-data/processed/
-data/splits/
+# IDE
+.idea/
 
-# Results
-.venv/
-__pycache__/
-*.py[cod]
-.idea/workspace.xml
+# Data
+data/
+
+
+# Model weights
+results/*.pt
+
+# Prompts
+prompts/
+*.md
+!README.md
