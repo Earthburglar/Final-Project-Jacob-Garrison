@@ -116,7 +116,7 @@ def build_resnet(num_classes: int = 10, freeze_backbone: bool = True) -> nn.Modu
     return model
 
 
-def get_model(model_name: str) -> nn.Module:
+def get_model(model_name: str, freeze_backbone: bool = True) -> nn.Module:
     """
     Return the model corresponding to the given name string.
 
@@ -132,6 +132,6 @@ def get_model(model_name: str) -> nn.Module:
     if model_name == "baseline":
         return BaselineCNN(num_classes=10)
     elif model_name == "resnet":
-        return build_resnet(num_classes=10, freeze_backbone=True)
+        return build_resnet(num_classes=10, freeze_backbone=freeze_backbone)
     else:
         raise ValueError(f"Unknown model '{model_name}'. Choose 'baseline' or 'resnet'.")

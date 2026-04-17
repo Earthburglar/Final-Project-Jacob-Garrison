@@ -245,7 +245,8 @@ def train(args: argparse.Namespace) -> None:
     )
 
     # --- Model ---
-    model = get_model(args.model).to(device)
+    freeze = not getattr(args, "unfreeze", False)
+    model = get_model(args.model, freeze_backbone=freeze).to(device)
     num_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
     print(f"Model: {args.model}  |  Trainable parameters: {num_params:,}")
 
@@ -341,16 +342,21 @@ def parse_args() -> argparse.Namespace:
         help="Learning rate for the Adam optimizer (default: 0.001).",
     )
     parser.add_argument(
+        "--unfreeze",
+        action="store_true",
+        help="Unfreeze the ResNet backbone for full fine-tuning (ignored for baseline).",
+    )
+    parser.add_argument(
         "--data-dir",
         type=str,
-        default="data/EuroSAT_RGB",
-        help="Path to the EuroSAT_RGB directory (default: data/EuroSAT_RGB).",
+        default="../data/EuroSAT_RGB",
+        help="Path to the EuroSAT_RGB directory (default: ../data/EuroSAT_RGB).",
     )
     parser.add_argument(
         "--results-dir",
         type=str,
-        default="results",
-        help="Directory for saving checkpoints, logs, and plots (default: results).",
+        default="../results",
+        help="Directory for saving checkpoints, logs, and plots (default: ../results).",
     )
     return parser.parse_args()
 

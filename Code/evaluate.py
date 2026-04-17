@@ -165,7 +165,8 @@ def evaluate(args: argparse.Namespace) -> None:
     print(f"Using device: {device}")
 
     # --- Load model ---
-    model = get_model(args.model).to(device)
+    freeze = not getattr(args, "unfreeze", False)
+    model = get_model(args.model, freeze_backbone=freeze).to(device)
     model.load_state_dict(torch.load(args.model_path, map_location=device))
     print(f"Loaded checkpoint from {args.model_path}")
 
@@ -216,14 +217,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--data-dir",
         type=str,
-        default="data/EuroSAT_RGB",
-        help="Path to the EuroSAT_RGB directory (default: data/EuroSAT_RGB).",
+        default="../data/EuroSAT_RGB",
+        help="Path to the EuroSAT_RGB directory (default: ../data/EuroSAT_RGB).",
     )
     parser.add_argument(
         "--results-dir",
         type=str,
-        default="results",
-        help="Directory for saving output files (default: results).",
+        default="../results",
+        help="Directory for saving output files (default: ../results).",
     )
     return parser.parse_args()
 
