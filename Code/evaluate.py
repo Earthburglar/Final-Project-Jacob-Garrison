@@ -8,8 +8,9 @@ Produces:
   - results/<model>_classification_report.txt — text file of the sklearn report
 
 Usage:
-    python src/evaluate.py --model baseline --model-path results/baseline_best.pt
-    python src/evaluate.py --model resnet   --model-path results/resnet_best.pt
+    python3 Code/evaluate.py --model baseline --model-path results/baseline_best.pt
+    python3 Code/evaluate.py --model resnet_frozen --model-path results/resnet_frozen_best.pt
+    python3 Code/evaluate.py --model resnet_finetuned --model-path results/resnet_finetuned_best.pt
 """
 
 import argparse
@@ -80,7 +81,7 @@ def save_confusion_matrix(
         true_labels:       Ground-truth class indices for the test set.
         predicted_labels:  Model-predicted class indices for the test set.
         class_names:       Ordered list of class name strings.
-        model_name:        "baseline" or "resnet", used in the filename.
+        model_name:        "baseline", "resnet_frozen" or "resnet_finetuned", used in the filename.
         results_dir:       Directory where the PNG is saved.
     """
     matrix = confusion_matrix(true_labels, predicted_labels)
@@ -111,7 +112,7 @@ def save_confusion_matrix(
     plt.tight_layout()
 
     output_path = os.path.join(results_dir, f"{model_name}_confusion_matrix.png")
-    plt.savefig(output_path)
+    plt.savefig(output_path, dpi=300, bbox_inches="tight")
     plt.close()
     print(f"Confusion matrix saved to {output_path}")
 
@@ -134,7 +135,7 @@ def save_classification_report(
         true_labels:       Ground-truth class indices for the test set.
         predicted_labels:  Model-predicted class indices for the test set.
         class_names:       Ordered list of class name strings.
-        model_name:        "baseline" or "resnet", used in the filename.
+        model_name:        "baseline", "resnet_frozen" or "resnet_finetuned", used in the filename.
         results_dir:       Directory where the .txt file is saved.
 
     Returns:
@@ -166,7 +167,7 @@ def evaluate(args: argparse.Namespace) -> None:
 
     # --- Load model ---
     freeze = not getattr(args, "unfreeze", False)
-    model = get_model(args.model, freeze_backbone=freeze).to(device)
+    model = get_model(args.model).to(device)
     model.load_state_dict(torch.load(args.model_path, map_location=device))
     print(f"Loaded checkpoint from {args.model_path}")
 
@@ -205,7 +206,7 @@ def parse_args() -> argparse.Namespace:
         "--model",
         type=str,
         required=True,
-        choices=["baseline", "resnet"],
+        choices=["baseline", "resnet_frozen", "resnet_finetuned"],
         help="Which model architecture to evaluate.",
     )
     parser.add_argument(

@@ -6,7 +6,7 @@ dataset from disk, defines image transforms, splits the data into train/val/test
 and returns ready-to-use DataLoaders for the training pipeline.
 
 Usage (standalone check):
-    python src/data_setup.py --data-dir data/EuroSAT_RGB
+    python Code/data_setup.py --data-dir data/EuroSAT_RGB
 """
 
 import argparse
@@ -132,7 +132,7 @@ def get_dataloaders(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Verify data loading for EuroSAT RGB.")
-    parser.add_argument("--data-dir", type=str, default="data/EuroSAT_RGB")
+    parser.add_argument("--data-dir", type=str, default="../data/EuroSAT_RGB")
     parser.add_argument("--batch-size", type=int, default=64)
     args = parser.parse_args()
 

@@ -3,7 +3,8 @@ models.py — Model definitions for the EuroSAT land-use classification project.
 
 Defines two architectures:
   1. BaselineCNN  — A small custom CNN trained from scratch.
-  2. build_resnet — A ResNet18 pretrained on ImageNet, fine-tuned for 10-class output.
+  2. build_resnet — A ResNet18 pretrained on ImageNet. Can be used in frozen mode
+                    (only fc trains) or fine-tuned mode (all layers train).
 
 Both are accessed through the get_model() dispatcher used by train.py and evaluate.py.
 """
@@ -80,26 +81,30 @@ class BaselineCNN(nn.Module):
 
 def build_resnet(num_classes: int = 10, freeze_backbone: bool = True) -> nn.Module:
     """
-    Build a ResNet18 model pretrained on ImageNet, adapted for EuroSAT classification.
+        Build a ResNet18 model pretrained on ImageNet, adapted for EuroSAT classification.
 
-    Transfer learning reuses feature representations learned from 1.2M ImageNet images.
-    The backbone (all layers except the final fc) has already learned to detect edges,
-    textures, and high-level visual patterns that are also useful for satellite imagery.
+        Transfer learning reuses feature representations learned from 1.2M ImageNet images.
+        The backbone (all layers except the final fc) has already learned to detect edges,
+        textures, and high-level visual patterns that are also useful for satellite imagery.
 
-    Why freeze the backbone:
-        Our dataset has ~18,900 training images — small compared to ImageNet's 1.2M.
-        Fine-tuning all layers on a small dataset risks catastrophic forgetting: the
-        pretrained weights get overwritten before the classifier head has a chance to
-        converge, often hurting performance. Freezing the backbone forces only the
-        classifier head to learn, which is both faster and more stable on small datasets.
+        Frozen vs. fine-tuned tradeoffs:
+            - Frozen backbone (freeze_backbone=True): Only the new final fc layer trains.
+              This is fast and stable but relies entirely on ImageNet features being
+              transferable to satellite imagery.
+            - Fine-tuned backbone (freeze_backbone=False): All layers are trainable, so
+              the pretrained features can be adapted to the new domain. This typically
+              requires a lower learning rate (e.g., 1e-4) to avoid overwriting useful
+              pretrained weights too aggressively, but achieves significantly higher
+              accuracy when the target domain differs from ImageNet.
 
-    Args:
-        num_classes:      Number of output classes (10 for EuroSAT).
-        freeze_backbone:  If True, only the final fc layer is trainable.
+        Args:
+            num_classes:      Number of output classes (10 for EuroSAT).
+            freeze_backbone:  If True, only the final fc layer is trainable. If False,
+                              all layers are trainable for full fine-tuning.
 
-    Returns:
-        A modified ResNet18 nn.Module ready for training.
-    """
+        Returns:
+            A modified ResNet18 nn.Module ready for training.
+        """
     # Load ResNet18 with official pretrained ImageNet weights
     model = models.resnet18(weights=ResNet18_Weights.DEFAULT)
 
@@ -116,12 +121,17 @@ def build_resnet(num_classes: int = 10, freeze_backbone: bool = True) -> nn.Modu
     return model
 
 
-def get_model(model_name: str, freeze_backbone: bool = True) -> nn.Module:
+def get_model(model_name: str) -> nn.Module:
     """
     Return the model corresponding to the given name string.
 
+    Model options:
+        - "baseline": Custom 3-block CNN trained from scratch.
+        - "resnet_frozen": Pretrained ResNet18 with backbone frozen (only fc layer trains).
+        - "resnet_finetuned": Pretrained ResNet18 with all layers trainable.
+
     Args:
-        model_name: Either "baseline" (BaselineCNN) or "resnet" (pretrained ResNet18).
+        model_name: One of "baseline", "resnet_frozen", or "resnet_finetuned".
 
     Returns:
         An nn.Module instance ready to be moved to a device and trained.
@@ -131,7 +141,12 @@ def get_model(model_name: str, freeze_backbone: bool = True) -> nn.Module:
     """
     if model_name == "baseline":
         return BaselineCNN(num_classes=10)
-    elif model_name == "resnet":
-        return build_resnet(num_classes=10, freeze_backbone=freeze_backbone)
+    elif model_name == "resnet_frozen":
+        return build_resnet(num_classes=10, freeze_backbone=True)
+    elif model_name == "resnet_finetuned":
+        return build_resnet(num_classes=10, freeze_backbone=False)
     else:
-        raise ValueError(f"Unknown model '{model_name}'. Choose 'baseline' or 'resnet'.")
+        raise ValueError(
+            f"Unknown model '{model_name}'. "
+            f"Choose 'baseline', 'resnet_frozen', or 'resnet_finetuned'."
+        )

@@ -8,8 +8,9 @@ dataset. After training, saves:
   - A training curves plot to results/<model>_training_curves.png
 
 Usage:
-    python src/train.py --model baseline
-    python src/train.py --model resnet --epochs 30 --lr 0.0005
+    python3 Code/train.py --model baseline
+    python3 Code/train.py --model resnet_frozen --epochs 30 --lr 0.0005
+    python3 src/train.py --model resnet_finetuned --epochs 30 --lr 0.0001
 """
 
 import argparse
@@ -95,7 +96,7 @@ def evaluate(
     Evaluate the model on a dataset split (val or test) and return loss and accuracy.
 
     The model is set to eval() mode to disable Dropout and use running statistics in
-    BatchNorm. torch.no_grad() skips gradient computation, reducing memory usage.
+    BatchNorm.torch.no_grad() skips gradient computation, reducing memory usage.
 
     Args:
         model:     The neural network to evaluate.
@@ -146,7 +147,7 @@ def save_training_curves(
         train_losses:    List of average training losses, one per epoch.
         val_losses:      List of average validation losses, one per epoch.
         val_accuracies:  List of validation accuracies (0–1), one per epoch.
-        model_name:      "baseline" or "resnet", used in the filename.
+        model_name:      "baseline", "resnet_frozen" or "resnet_finetuned", used in the filename.
         results_dir:     Directory where the PNG is saved.
     """
     epochs = range(1, len(train_losses) + 1)
@@ -177,7 +178,7 @@ def save_training_curves(
     plt.tight_layout()
 
     output_path = os.path.join(results_dir, f"{model_name}_training_curves.png")
-    plt.savefig(output_path)
+    plt.savefig(output_path, dpi=300, bbox_inches="tight")
     plt.close()
     print(f"Training curves saved to {output_path}")
 
@@ -198,7 +199,7 @@ def save_run_log(
     or referenced without rerunning training.
 
     Args:
-        model_name:        "baseline" or "resnet".
+        model_name:        "baseline", "resnet_frozen" or "resnet_finetuned".
         config:            Dict of hyperparameters (epochs, batch_size, lr, model_params).
         history:           Dict with keys "train_loss", "val_loss", "val_accuracy".
         best_epoch:        Epoch (1-indexed) where best val accuracy was achieved.
@@ -246,7 +247,7 @@ def train(args: argparse.Namespace) -> None:
 
     # --- Model ---
     freeze = not getattr(args, "unfreeze", False)
-    model = get_model(args.model, freeze_backbone=freeze).to(device)
+    model = get_model(args.model).to(device)
     num_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
     print(f"Model: {args.model}  |  Trainable parameters: {num_params:,}")
 
@@ -320,7 +321,7 @@ def parse_args() -> argparse.Namespace:
         "--model",
         type=str,
         required=True,
-        choices=["baseline", "resnet"],
+        choices=["baseline", "resnet_frozen", "resnet_finetuned"],
         help="Which model architecture to train.",
     )
     parser.add_argument(
