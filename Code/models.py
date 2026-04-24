@@ -16,27 +16,23 @@ from torchvision.models import ResNet18_Weights
 
 class BaselineCNN(nn.Module):
     """
-    A simple 3-block convolutional neural network trained from scratch.
+        A simple 3-block convolutional neural network trained from scratch.
 
-    Architecture overview:
-        Block 1: Conv(3→32, 3×3) → BatchNorm → ReLU → MaxPool(2×2)
-        Block 2: Conv(32→64, 3×3) → BatchNorm → ReLU → MaxPool(2×2)
-        Block 3: Conv(64→128, 3×3) → BatchNorm → ReLU → MaxPool(2×2)
-        Classifier: Flatten → Linear(8192→256) → ReLU → Dropout(0.5) → Linear(256→10)
+        Architecture overview:
+            Block 1: Conv(3→32, 3×3) → BatchNorm → ReLU → MaxPool(2×2)
+            Block 2: Conv(32→64, 3×3) → BatchNorm → ReLU → MaxPool(2×2)
+            Block 3: Conv(64→128, 3×3) → BatchNorm → ReLU → MaxPool(2×2)
+            Adaptive pooling → 1×1 spatial dims, 128 channels
+            Classifier: Flatten → Linear(128→256) → ReLU → Dropout(0.5) → Linear(256→10)
 
-    Spatial dimension math (input 64×64):
-        After block 1: 64/2 = 32×32
-        After block 2: 32/2 = 16×16
-        After block 3: 16/2 = 8×8
-        Flattened: 128 channels × 8 × 8 = 8192
-
-    Design decisions:
-        - BatchNorm after each Conv stabilizes training and lets us use a higher lr.
-        - MaxPool halves spatial resolution, progressively building abstract features.
-        - Dropout(0.5) in the classifier reduces overfitting on the training set.
-        - Three blocks give enough depth to detect spatial patterns in 64×64 images
-          without the model being too large for the dataset size (~18,900 training images).
-    """
+        Design decisions:
+            - BatchNorm after each Conv stabilizes training and lets us use a higher lr.
+            - MaxPool halves spatial resolution, progressively building abstract features.
+            - AdaptiveAvgPool2d makes the network resolution-agnostic: the same architecture
+              works at 64×64 input (producing 8×8 feature maps) or 224×224 input (producing
+              28×28 feature maps). This also reduces parameters vs. a fixed-size flatten.
+            - Dropout(0.5) in the classifier reduces overfitting on the training set.
+        """
 
     def __init__(self, num_classes: int = 10) -> None:
         super().__init__()
@@ -62,12 +58,18 @@ class BaselineCNN(nn.Module):
             nn.MaxPool2d(kernel_size=2, stride=2),  # 16×16 → 8×8
         )
 
+        # Adaptive pooling makes the classifier input size independent of the
+        # input image resolution. It collapses any spatial dimension to 1x1,
+        # so we always get 128 features regardless of whether the input is
+        # 64x64 (producing 8x8 feature maps) or 224x224 (producing 28x28).
+        self.adaptive_pool = nn.AdaptiveAvgPool2d((1, 1))
+
         # Fully connected classifier head
         self.classifier = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(128 * 8 * 8, 256),  # 8192 → 256
+            nn.Linear(128, 256),  # 128 features (one per channel) → 256
             nn.ReLU(),
-            nn.Dropout(p=0.5),            # Regularization to prevent overfitting
+            nn.Dropout(p=0.5),  # Regularization to prevent overfitting
             nn.Linear(256, num_classes),  # 256 → 10 class logits
         )
 
@@ -75,6 +77,7 @@ class BaselineCNN(nn.Module):
         x = self.block1(x)
         x = self.block2(x)
         x = self.block3(x)
+        x = self.adaptive_pool(x)
         x = self.classifier(x)
         return x
 

@@ -31,7 +31,7 @@ def get_train_transforms() -> transforms.Compose:
     transforms so evaluation reflects true generalization.
     """
     return transforms.Compose([
-        transforms.Resize((64, 64)),          # Explicit resize (images may already be 64x64)
+        transforms.Resize((224, 224)),          # Explicit resize (images may already be 64x64)
         transforms.RandomHorizontalFlip(),    # Satellite imagery has no preferred orientation
         transforms.RandomRotation(15),        # Small rotation for robustness
         transforms.ToTensor(),
@@ -47,7 +47,7 @@ def get_eval_transforms() -> transforms.Compose:
     view of the data to get an accurate measure of generalization performance.
     """
     return transforms.Compose([
-        transforms.Resize((64, 64)),
+        transforms.Resize((224, 224)),
         transforms.ToTensor(),
         transforms.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD),
     ])
