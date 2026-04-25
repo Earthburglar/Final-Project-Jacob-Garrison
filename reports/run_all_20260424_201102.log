@@ -1,0 +1,245 @@
+============================================================
+ Full pipeline run started at Fri Apr 24 20:11:02 UTC 2026
+ Log file: ../results/run_all_20260424_201102.log
+============================================================
+
+------------------------------------------------------------
+ STEP: Train baseline CNN
+ Command: python train.py --model baseline
+ Started: 20:11:02
+------------------------------------------------------------
+Using device: cuda
+Model: baseline  |  Trainable parameters: 129,290
+Epoch [  1/25] | Train Loss: 1.1601 | Val Loss: 0.8888 | Val Acc: 67.48%
+Epoch [  2/25] | Train Loss: 0.8490 | Val Loss: 0.7133 | Val Acc: 73.90%
+Epoch [  3/25] | Train Loss: 0.7541 | Val Loss: 0.6598 | Val Acc: 76.30%
+Epoch [  4/25] | Train Loss: 0.6886 | Val Loss: 0.6830 | Val Acc: 76.12%
+Epoch [  5/25] | Train Loss: 0.6570 | Val Loss: 0.6153 | Val Acc: 77.90%
+Epoch [  6/25] | Train Loss: 0.6362 | Val Loss: 0.9003 | Val Acc: 72.44%
+Epoch [  7/25] | Train Loss: 0.5905 | Val Loss: 0.4571 | Val Acc: 83.36%
+Epoch [  8/25] | Train Loss: 0.5673 | Val Loss: 0.4518 | Val Acc: 84.27%
+Epoch [  9/25] | Train Loss: 0.5444 | Val Loss: 0.4380 | Val Acc: 85.04%
+Epoch [ 10/25] | Train Loss: 0.5233 | Val Loss: 0.5526 | Val Acc: 80.54%
+Epoch [ 11/25] | Train Loss: 0.5058 | Val Loss: 0.4003 | Val Acc: 85.43%
+Epoch [ 12/25] | Train Loss: 0.4857 | Val Loss: 0.4108 | Val Acc: 86.02%
+Epoch [ 13/25] | Train Loss: 0.4660 | Val Loss: 0.4118 | Val Acc: 85.63%
+Epoch [ 14/25] | Train Loss: 0.4671 | Val Loss: 0.4049 | Val Acc: 85.16%
+Epoch [ 15/25] | Train Loss: 0.4436 | Val Loss: 0.3462 | Val Acc: 87.85%
+Epoch [ 16/25] | Train Loss: 0.4383 | Val Loss: 0.4005 | Val Acc: 85.83%
+Epoch [ 17/25] | Train Loss: 0.4182 | Val Loss: 0.3496 | Val Acc: 87.78%
+Epoch [ 18/25] | Train Loss: 0.4062 | Val Loss: 0.3063 | Val Acc: 89.51%
+Epoch [ 19/25] | Train Loss: 0.3982 | Val Loss: 0.3791 | Val Acc: 86.77%
+Epoch [ 20/25] | Train Loss: 0.3854 | Val Loss: 0.2991 | Val Acc: 89.83%
+Epoch [ 21/25] | Train Loss: 0.3853 | Val Loss: 0.2896 | Val Acc: 89.70%
+Epoch [ 22/25] | Train Loss: 0.3738 | Val Loss: 0.3200 | Val Acc: 88.40%
+Epoch [ 23/25] | Train Loss: 0.3578 | Val Loss: 0.2691 | Val Acc: 90.77%
+Epoch [ 24/25] | Train Loss: 0.3526 | Val Loss: 0.4631 | Val Acc: 84.59%
+Epoch [ 25/25] | Train Loss: 0.3422 | Val Loss: 0.2902 | Val Acc: 89.90%
+
+Best model: epoch 23, val accuracy 90.77%
+Checkpoint saved to ../results/baseline_best.pt
+Training curves saved to ../results/baseline_training_curves.png
+Run log saved to ../results/run_baseline_20260424_202118.json
+
+ Completed in 10m 16s
+
+------------------------------------------------------------
+ STEP: Train ResNet (frozen backbone)
+ Command: python train.py --model resnet_frozen
+ Started: 20:21:18
+------------------------------------------------------------
+Using device: cuda
+Model: resnet_frozen  |  Trainable parameters: 5,130
+Epoch [  1/25] | Train Loss: 0.7768 | Val Loss: 0.5439 | Val Acc: 82.84%
+Epoch [  2/25] | Train Loss: 0.4182 | Val Loss: 0.4188 | Val Acc: 87.06%
+Epoch [  3/25] | Train Loss: 0.3555 | Val Loss: 0.3850 | Val Acc: 87.85%
+Epoch [  4/25] | Train Loss: 0.3275 | Val Loss: 0.3204 | Val Acc: 89.48%
+Epoch [  5/25] | Train Loss: 0.3147 | Val Loss: 0.3206 | Val Acc: 89.21%
+Epoch [  6/25] | Train Loss: 0.3012 | Val Loss: 0.2822 | Val Acc: 90.35%
+Epoch [  7/25] | Train Loss: 0.2929 | Val Loss: 0.3297 | Val Acc: 89.06%
+Epoch [  8/25] | Train Loss: 0.2771 | Val Loss: 0.2959 | Val Acc: 89.90%
+Epoch [  9/25] | Train Loss: 0.2866 | Val Loss: 0.2762 | Val Acc: 90.79%
+Epoch [ 10/25] | Train Loss: 0.2724 | Val Loss: 0.2709 | Val Acc: 90.74%
+Epoch [ 11/25] | Train Loss: 0.2676 | Val Loss: 0.2635 | Val Acc: 91.38%
+Epoch [ 12/25] | Train Loss: 0.2634 | Val Loss: 0.2710 | Val Acc: 90.91%
+Epoch [ 13/25] | Train Loss: 0.2656 | Val Loss: 0.2660 | Val Acc: 91.14%
+Epoch [ 14/25] | Train Loss: 0.2571 | Val Loss: 0.2563 | Val Acc: 91.06%
+Epoch [ 15/25] | Train Loss: 0.2560 | Val Loss: 0.2472 | Val Acc: 91.28%
+Epoch [ 16/25] | Train Loss: 0.2556 | Val Loss: 0.2540 | Val Acc: 91.51%
+Epoch [ 17/25] | Train Loss: 0.2491 | Val Loss: 0.2509 | Val Acc: 91.88%
+Epoch [ 18/25] | Train Loss: 0.2614 | Val Loss: 0.2461 | Val Acc: 92.00%
+Epoch [ 19/25] | Train Loss: 0.2493 | Val Loss: 0.2550 | Val Acc: 91.33%
+Epoch [ 20/25] | Train Loss: 0.2452 | Val Loss: 0.2614 | Val Acc: 91.14%
+Epoch [ 21/25] | Train Loss: 0.2438 | Val Loss: 0.2418 | Val Acc: 91.75%
+Epoch [ 22/25] | Train Loss: 0.2427 | Val Loss: 0.2394 | Val Acc: 91.90%
+Epoch [ 23/25] | Train Loss: 0.2454 | Val Loss: 0.2598 | Val Acc: 91.14%
+Epoch [ 24/25] | Train Loss: 0.2484 | Val Loss: 0.2489 | Val Acc: 91.80%
+Epoch [ 25/25] | Train Loss: 0.2424 | Val Loss: 0.2573 | Val Acc: 91.38%
+
+Best model: epoch 18, val accuracy 92.00%
+Checkpoint saved to ../results/resnet_frozen_best.pt
+Training curves saved to ../results/resnet_frozen_training_curves.png
+Run log saved to ../results/run_resnet_frozen_20260424_203042.json
+
+ Completed in 9m 25s
+
+------------------------------------------------------------
+ STEP: Train ResNet (fine-tuned backbone)
+ Command: python train.py --model resnet_finetuned --lr 0.0001
+ Started: 20:30:43
+------------------------------------------------------------
+Using device: cuda
+Model: resnet_finetuned  |  Trainable parameters: 11,181,642
+Epoch [  1/25] | Train Loss: 0.2272 | Val Loss: 0.1215 | Val Acc: 96.10%
+Epoch [  2/25] | Train Loss: 0.0924 | Val Loss: 0.0733 | Val Acc: 97.63%
+Epoch [  3/25] | Train Loss: 0.0723 | Val Loss: 0.0742 | Val Acc: 97.73%
+Epoch [  4/25] | Train Loss: 0.0553 | Val Loss: 0.0532 | Val Acc: 98.02%
+Epoch [  5/25] | Train Loss: 0.0400 | Val Loss: 0.0817 | Val Acc: 97.65%
+Epoch [  6/25] | Train Loss: 0.0446 | Val Loss: 0.0660 | Val Acc: 97.80%
+Epoch [  7/25] | Train Loss: 0.0366 | Val Loss: 0.0640 | Val Acc: 97.75%
+Epoch [  8/25] | Train Loss: 0.0308 | Val Loss: 0.0590 | Val Acc: 98.10%
+Epoch [  9/25] | Train Loss: 0.0362 | Val Loss: 0.0494 | Val Acc: 98.44%
+Epoch [ 10/25] | Train Loss: 0.0228 | Val Loss: 0.0563 | Val Acc: 98.17%
+Epoch [ 11/25] | Train Loss: 0.0211 | Val Loss: 0.0548 | Val Acc: 98.32%
+Epoch [ 12/25] | Train Loss: 0.0267 | Val Loss: 0.0521 | Val Acc: 98.30%
+Epoch [ 13/25] | Train Loss: 0.0214 | Val Loss: 0.0500 | Val Acc: 98.37%
+Epoch [ 14/25] | Train Loss: 0.0249 | Val Loss: 0.0530 | Val Acc: 98.49%
+Epoch [ 15/25] | Train Loss: 0.0149 | Val Loss: 0.0571 | Val Acc: 98.12%
+Epoch [ 16/25] | Train Loss: 0.0164 | Val Loss: 0.0766 | Val Acc: 97.98%
+Epoch [ 17/25] | Train Loss: 0.0164 | Val Loss: 0.0540 | Val Acc: 98.22%
+Epoch [ 18/25] | Train Loss: 0.0233 | Val Loss: 0.0654 | Val Acc: 97.73%
+Epoch [ 19/25] | Train Loss: 0.0215 | Val Loss: 0.0550 | Val Acc: 98.25%
+Epoch [ 20/25] | Train Loss: 0.0130 | Val Loss: 0.0449 | Val Acc: 98.72%
+Epoch [ 21/25] | Train Loss: 0.0150 | Val Loss: 0.0686 | Val Acc: 98.10%
+Epoch [ 22/25] | Train Loss: 0.0151 | Val Loss: 0.0601 | Val Acc: 98.37%
+Epoch [ 23/25] | Train Loss: 0.0135 | Val Loss: 0.1196 | Val Acc: 97.28%
+Epoch [ 24/25] | Train Loss: 0.0158 | Val Loss: 0.0553 | Val Acc: 98.37%
+Epoch [ 25/25] | Train Loss: 0.0128 | Val Loss: 0.0494 | Val Acc: 98.67%
+
+Best model: epoch 20, val accuracy 98.72%
+Checkpoint saved to ../results/resnet_finetuned_best.pt
+Training curves saved to ../results/resnet_finetuned_training_curves.png
+Run log saved to ../results/run_resnet_finetuned_20260424_204228.json
+
+ Completed in 11m 45s
+
+------------------------------------------------------------
+ STEP: Evaluate baseline CNN
+ Command: python evaluate.py --model baseline --model-path ../results/baseline_best.pt
+ Started: 20:42:28
+------------------------------------------------------------
+Using device: cuda
+Loaded checkpoint from ../results/baseline_best.pt
+
+Test Accuracy: 90.62%
+
+Classification Report:
+============================================================
+Classification report saved to ../results/baseline_classification_report.txt
+                      precision    recall  f1-score   support
+
+          AnnualCrop       0.95      0.90      0.92       472
+              Forest       0.97      0.95      0.96       442
+HerbaceousVegetation       0.87      0.90      0.88       458
+             Highway       0.88      0.72      0.79       391
+          Industrial       0.88      0.98      0.93       378
+             Pasture       0.86      0.91      0.88       299
+       PermanentCrop       0.85      0.85      0.85       379
+         Residential       0.97      0.96      0.97       450
+               River       0.85      0.89      0.87       375
+             SeaLake       0.95      0.97      0.96       406
+
+            accuracy                           0.91      4050
+           macro avg       0.90      0.90      0.90      4050
+        weighted avg       0.91      0.91      0.91      4050
+
+Confusion matrix saved to ../results/baseline_confusion_matrix.png
+
+ Completed in 0m 9s
+
+------------------------------------------------------------
+ STEP: Evaluate ResNet (frozen)
+ Command: python evaluate.py --model resnet_frozen --model-path ../results/resnet_frozen_best.pt
+ Started: 20:42:37
+------------------------------------------------------------
+Using device: cuda
+Loaded checkpoint from ../results/resnet_frozen_best.pt
+
+Test Accuracy: 91.19%
+
+Classification Report:
+============================================================
+Classification report saved to ../results/resnet_frozen_classification_report.txt
+                      precision    recall  f1-score   support
+
+          AnnualCrop       0.95      0.91      0.93       472
+              Forest       0.94      0.98      0.96       442
+HerbaceousVegetation       0.89      0.91      0.90       458
+             Highway       0.76      0.91      0.83       391
+          Industrial       0.92      0.96      0.94       378
+             Pasture       0.94      0.92      0.93       299
+       PermanentCrop       0.92      0.82      0.87       379
+         Residential       0.96      0.96      0.96       450
+               River       0.87      0.82      0.85       375
+             SeaLake       0.99      0.92      0.95       406
+
+            accuracy                           0.91      4050
+           macro avg       0.91      0.91      0.91      4050
+        weighted avg       0.92      0.91      0.91      4050
+
+Confusion matrix saved to ../results/resnet_frozen_confusion_matrix.png
+
+ Completed in 0m 10s
+
+------------------------------------------------------------
+ STEP: Evaluate ResNet (fine-tuned)
+ Command: python evaluate.py --model resnet_finetuned --model-path ../results/resnet_finetuned_best.pt
+ Started: 20:42:47
+------------------------------------------------------------
+Using device: cuda
+Loaded checkpoint from ../results/resnet_finetuned_best.pt
+
+Test Accuracy: 98.47%
+
+Classification Report:
+============================================================
+Classification report saved to ../results/resnet_finetuned_classification_report.txt
+                      precision    recall  f1-score   support
+
+          AnnualCrop       0.98      0.98      0.98       472
+              Forest       0.99      1.00      0.99       442
+HerbaceousVegetation       0.98      0.98      0.98       458
+             Highway       0.97      0.99      0.98       391
+          Industrial       0.99      0.99      0.99       378
+             Pasture       0.96      0.98      0.97       299
+       PermanentCrop       0.97      0.98      0.98       379
+         Residential       1.00      0.99      1.00       450
+               River       0.99      0.97      0.98       375
+             SeaLake       1.00      0.99      0.99       406
+
+            accuracy                           0.98      4050
+           macro avg       0.98      0.98      0.98      4050
+        weighted avg       0.98      0.98      0.98      4050
+
+Confusion matrix saved to ../results/resnet_finetuned_confusion_matrix.png
+
+ Completed in 0m 9s
+
+------------------------------------------------------------
+ STEP: Generate Grad-CAM comparison figure
+ Command: python visualize.py --models baseline resnet_frozen resnet_finetuned --model-paths ../results/baseline_best.pt ../results/resnet_frozen_best.pt ../results/resnet_finetuned_best.pt
+ Started: 20:42:56
+------------------------------------------------------------
+Using device: cuda
+Loaded baseline from ../results/baseline_best.pt
+Loaded resnet_frozen from ../results/resnet_frozen_best.pt
+Loaded resnet_finetuned from ../results/resnet_finetuned_best.pt
+Sampled 10 images (one per class)
+Grad-CAM comparison figure saved to ../results/gradcam_baseline_vs_resnet_frozen_vs_resnet_finetuned.png
+
+ Completed in 0m 11s
+
+============================================================
+ Full pipeline completed at Fri Apr 24 20:43:07 UTC 2026
+ All outputs saved to ../results/
+============================================================
