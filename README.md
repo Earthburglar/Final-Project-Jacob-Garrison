@@ -38,8 +38,7 @@ Example classes include:
 ```text
 .
 ├── Code/
-├── data/
-├── notebooks/
+├── Proposal/
 ├── results/
 ├── reports/
 ├── README.md
